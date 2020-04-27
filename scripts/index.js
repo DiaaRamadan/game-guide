@@ -1,4 +1,18 @@
 const guideList = document.querySelector('.guides');
+const loggedOutLinks = document.querySelectorAll('.logged-out');
+const loggedInLinks = document.querySelectorAll('.logged-in');
+
+const setupUI = (user) => {
+  if (user){
+      // toggle UI elements
+      loggedInLinks.forEach(item => item.style.display = "block");
+      loggedOutLinks.forEach(item => item.style.display = "none");
+  }else{
+      loggedInLinks.forEach(item => item.style.display = "none");
+      loggedOutLinks.forEach(item => item.style.display = "block");
+  }
+};
+
 const setupGuides = (data) => {
     guideList.innerHTML = "<div class='center'><img class='image-responsive' src='img/ajax-loader.gif' alt='Loader'></div>";
     if (data.length) {
@@ -14,13 +28,13 @@ const setupGuides = (data) => {
             html += li;
         });
         guideList.innerHTML = html;
-    }else{
-        guideList.innerHTML = "<h4 class='center'>Login to view guides</h4>";
+    } else {
+        guideList.innerHTML = "<h4 class='center-align'>Login to view guides</h4>";
     }
 };
 
 // setup materialize components
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 
     var modals = document.querySelectorAll('.modal');
     M.Modal.init(modals);

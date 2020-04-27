@@ -4,11 +4,12 @@ auth.onAuthStateChanged((user) => {
         // get guides
         db.collection('guides').get().then((snapshot) => {
             setupGuides(snapshot.docs);
+            setupUI(user);
         });
     }else{
         setupGuides([]);
+        setupUI();
     }
-
 });
 
 // sign up
