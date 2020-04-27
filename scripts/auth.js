@@ -1,12 +1,12 @@
 // listen for auth status changes
 auth.onAuthStateChanged((user) => {
-    if (user){
+    if (user) {
         // get guides
         db.collection('guides').get().then((snapshot) => {
             setupGuides(snapshot.docs);
             setupUI(user);
         });
-    }else{
+    } else {
         setupGuides([]);
         setupUI();
     }
@@ -37,13 +37,29 @@ logoutBtn.addEventListener('click', (e) => {
 // User Login
 const loginForm = document.querySelector('#login-form'); // get login form
 loginForm.addEventListener('submit', (e) => {
-   e.preventDefault();
-   const email = loginForm['login-email'].value;
-   const password = loginForm['login-password'].value;
+    e.preventDefault();
+    const email = loginForm['login-email'].value;
+    const password = loginForm['login-password'].value;
 
-   auth.signInWithEmailAndPassword(email, password).then((cred) => {
-       const modal = document.querySelector('#modal-login');
-       M.Modal.getInstance(modal).close();
-       loginForm.reset();
-   });
+    auth.signInWithEmailAndPassword(email, password).then((cred) => {
+        const modal = document.querySelector('#modal-login');
+        M.Modal.getInstance(modal).close();
+        loginForm.reset();
+    });
+});
+
+// create new guide
+const createForm = document.querySelector('#create-form');
+createForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    db.collection('guides').add({
+        title: createForm['title'].value,
+        content: createForm['content'].value
+    }).then(() => {
+        const modal = document.querySelector('#modal-create');
+        M.Modal.getInstance(modal).close();
+        createForm.reset();
+    }).catch(err => {
+        alert(err.message);
+    });
 });
